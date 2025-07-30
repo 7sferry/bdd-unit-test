@@ -20,7 +20,7 @@ import static org.assertj.core.api.BDDSoftAssertions.thenSoftly;
 import static org.mockito.BDDMockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class UserServiceTest {
+class UserRegistrationUseCaseTest{
 	public static final String EMAIL = "peter@parker.com";
 	public static final String FULL_NAME = "peter";
 	public static final String PASSWORD = "12345678";
@@ -68,7 +68,7 @@ class UserServiceTest {
 			and.then(userEntity.getFullName()).isEqualTo(userRequest.getFullName());
 			and.then(userEntity.getBirthDate()).isEqualTo(userRequest.getBirthDate());
 			and.then(userEntity.getCreatedAt()).isCloseTo(Instant.now(), Assertions.within(Duration.ofHours(1)));
-			and.then(userEntity.isActive()).isEqualTo(true);
+			and.then(userEntity.isActive()).isTrue();
 
 			UserRegistrationResponse result = responseCaptor.getValue();
 			and.then(result).isNotNull();
