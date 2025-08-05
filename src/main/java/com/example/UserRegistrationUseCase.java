@@ -15,7 +15,7 @@ public class UserRegistrationUseCase{
 	private final NotificationClient notificationClient;
 
 	public void registerUser(UserRequest userRequest, UserRegistrationPresenter presenter){
-		if(userRequest.getPassword() == null || userRequest.getPassword().length() < 8 || !isValid(userRequest.getPassword())){
+		if(userRequest.getPassword() == null || userRequest.getPassword().length() < 8 || !hasDigitAndLetter(userRequest.getPassword())){
 			throw new IllegalArgumentException("Invalid password");
 		}
 		if(userRequest.getEmail() == null || userRequest.getEmail().trim().isEmpty()){
@@ -40,7 +40,7 @@ public class UserRegistrationUseCase{
 		presenter.present(new UserRegistrationResponse(user.getEmail(), "User registered successfully"));
 	}
 
-	public static boolean isValid(String password) {
+	private boolean hasDigitAndLetter(String password) {
 		boolean hasLetter = false;
 		boolean hasDigit = false;
 
