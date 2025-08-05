@@ -15,11 +15,11 @@ public class UserRegistrationUseCase{
 	private final NotificationClient notificationClient;
 
 	public void registerUser(UserRequest userRequest, UserRegistrationPresenter presenter){
+		if(userRequest.getPassword() == null || userRequest.getPassword().length() < 8 || !isValid(userRequest.getPassword())){
+			throw new IllegalArgumentException("Invalid password");
+		}
 		if(userRequest.getEmail() == null || userRequest.getEmail().trim().isEmpty()){
 			throw new IllegalArgumentException("Invalid email");
-		}
-		if(userRequest.getPassword() == null || userRequest.getPassword().trim().isEmpty() || userRequest.getPassword().length() < 8){
-			throw new IllegalArgumentException("Invalid password");
 		}
 		if(userGateway.existsByEmail(userRequest.getEmail())){
 			throw new IllegalArgumentException("Email already exists");
@@ -38,6 +38,21 @@ public class UserRegistrationUseCase{
 		notificationClient.sendWelcomeEmail(new EmailRequest(user.getEmail(), user.getFullName()));
 
 		presenter.present(new UserRegistrationResponse(user.getEmail(), "User registered successfully"));
+	}
+
+	public static boolean isValid(String password) {
+		boolean hasLetter = false;
+		boolean hasDigit = false;
+
+		for (char c : password.toCharArray()) {
+			if (Character.isLetter(c)) {
+				hasLetter = true;
+			} else if (Character.isDigit(c)) {
+				hasDigit = true;
+			}
+		}
+
+		return hasLetter && hasDigit;
 	}
 
 }

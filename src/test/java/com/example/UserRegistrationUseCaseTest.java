@@ -23,7 +23,7 @@ import static org.mockito.BDDMockito.*;
 class UserRegistrationUseCaseTest{
 	public static final String EMAIL = "peter@parker.com";
 	public static final String FULL_NAME = "peter";
-	public static final String PASSWORD = "12345678";
+	public static final String PASSWORD = "abc12345678";
 	public static final LocalDate BIRTH_DATE = LocalDate.of(1919, 1, 1);
 
 	@Mock
@@ -129,7 +129,7 @@ class UserRegistrationUseCaseTest{
 
 	@ParameterizedTest
 	@NullAndEmptySource
-	@ValueSource(strings = {"abc"})
+	@ValueSource(strings = {"abc123", "abcdefghijk", "1234567890"})
 	void givenInvalidPassword_thenThrowException(String password) {
 		// given
 		UserRequest userRequest = UserRequest.builder()
